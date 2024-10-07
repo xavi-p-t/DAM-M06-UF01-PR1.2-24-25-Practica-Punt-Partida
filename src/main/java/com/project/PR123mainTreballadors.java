@@ -59,6 +59,12 @@ public class PR123mainTreballadors {
     // Mètode per mostrar els treballadors llegint el fitxer CSV
     public void mostrarTreballadors() throws IOFitxerExcepcio {
         // *************** CODI PRÀCTICA **********************/
+        List<String> treballadorsCSV = llegirFitxerCSV();
+        if (treballadorsCSV.isEmpty()) {
+            System.out.println("No hay trabajadores");
+        } else {
+            treballadorsCSV.forEach(System.out::println);
+        }
     }
 
     // Mètode per modificar un treballador (interactiu)
@@ -82,6 +88,30 @@ public class PR123mainTreballadors {
     // Mètode que modifica treballador (per a tests i usuaris) llegint i escrivint sobre disc
     public void modificarTreballador(String id, String columna, String nouValor) throws IOFitxerExcepcio {
         // *************** CODI PRÀCTICA **********************/
+        List<String> traCSV = llegirFitxerCSV();
+        boolean trEnco= false;
+
+        for (int i = 0; i < traCSV.size(); i++) {
+            String empl = traCSV.get(i);
+            String[] empData = empl.split(",");
+            if (empData[0].equals(id)) {
+                trEnco = true;
+                switch (columna.toLowerCase()) {
+                    case "nom" -> empData[1] = nouValor;
+                    case "cognom" -> empData[2] = nouValor;
+                    case "departament" -> empData[3] = nouValor;
+                    case "salari" -> empData[4] = nouValor;
+                    default -> throw new IOFitxerExcepcio("La columna no es valida");
+                }
+                traCSV.set(i, String.join(",", empData));
+                break;
+            }
+        }
+        if (trEnco) {
+            escriureFitxerCSV(traCSV);
+        } else {
+            System.out.println("No se ha encontrado el trabajador");
+        }
     }
 
     // Encapsulació de llegir el fitxer CSV

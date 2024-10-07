@@ -1,5 +1,6 @@
 package com.project;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -34,5 +35,15 @@ public class PR121mainEscriu {
 
     public static void serialitzarHashMap(PR121hashmap hashMap) throws IOFitxerExcepcio {
         // *************** CODI PRÀCTICA **********************/
+
+        try {
+            FileOutputStream fo = new FileOutputStream(filePath);
+            ObjectOutputStream oos  = new ObjectOutputStream(fo);
+            oos.writeObject(hashMap);
+            oos.flush();
+
+        } catch (IOException e) {
+            throw new IOFitxerExcepcio("Error al escribir el archivo");
+        }
     }
 }
